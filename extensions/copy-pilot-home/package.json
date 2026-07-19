@@ -6,6 +6,6 @@
   "dependencies": {
     "@preact/signals": "2.3.x",
     "@shopify/ui-extensions": "2026.7.x",
-    "preact": "10.10.x"
+    "preact": "10.29.x"
   }
 }
