@@ -1,0 +1,445 @@
+{% comment %}
+  CopyPilot AI â€” Agentic SEO & Sales Copywriter
+  Production dashboard block (OS2.0). Renders the full merchant control panel:
+  credit meter, tone/language controls, Vision AI, live SERP/SEO scoring,
+  autonomous bulk audit and Shopify Billing.
+
+  NOTE: Supabase REST uses the shared project (wgqujfddrpzawvdwcxvm) with
+  isolated tables: copypilot_shops, copypilot_history only.
+{% endcomment %}
+
+{% comment %} MERCHANT-ONLY: live storefront musteriye GOSTERILMEZ {% endcomment %}
+{% if request.design_mode %}
+{%- liquid
+  assign cp_default_lang = block.settings.default_language | default: 'en'
+  assign cp_default_tone = block.settings.default_tone | default: 'professional'
+  assign cp_heading = block.settings.heading
+  if cp_heading == blank
+    assign cp_heading = 'CopyPilot AI'
+  endif
+  assign cp_monthly_credits = block.settings.monthly_credits | default: 200
+-%}
+
+<script src="{{ 'copy-pilot-core.js' | asset_url }}" defer></script>
+<script src="{{ 'copy-pilot-db.js' | asset_url }}" defer></script>
+<script src="{{ 'copy-pilot-gemini.js' | asset_url }}" defer></script>
+<script src="{{ 'copy-pilot-vision.js' | asset_url }}" defer></script>
+<script src="{{ 'copy-pilot-serp.js' | asset_url }}" defer></script>
+<script src="{{ 'copy-pilot-audit.js' | asset_url }}" defer></script>
+<script src="{{ 'copy-pilot-i18n.js' | asset_url }}" defer></script>
+<script src="{{ 'copy-pilot-billing.js' | asset_url }}" defer></script>
+<script src="{{ 'copy-pilot-sync.js' | asset_url }}" defer></script>
+<script src="{{ 'copy-pilot-enrichment.js' | asset_url }}" defer></script>
+<script src="{{ 'copy-pilot-brand.js' | asset_url }}" defer></script>
+<script src="{{ 'copy-pilot-queue.js' | asset_url }}" defer></script>
+<script src="{{ 'copy-pilot-geo.js' | asset_url }}" defer></script>
+<script src="{{ 'copy-pilot-media.js' | asset_url }}" defer></script>
+<script src="{{ 'copy-pilot-tags.js' | asset_url }}" defer></script>
+<script src="{{ 'copy-pilot-analytics.js' | asset_url }}" defer></script>
+<script src="{{ 'copy-pilot-chat.js' | asset_url }}" defer></script>
+<script src="{{ 'copy-pilot-import.js' | asset_url }}" defer></script>
+<script src="{{ 'copy-pilot-agent.js' | asset_url }}" defer></script>
+<script src="{{ 'copy-pilot-optimize.js' | asset_url }}" defer></script>
+<script src="{{ 'copy-pilot.js' | asset_url }}" defer></script>
+<script src="{{ 'copy-pilot-features.js' | asset_url }}" defer></script>
+
+<div
+  class="copy-pilot-app"
+  id="copyPilotApp-{{ block.id }}"
+  data-copy-pilot-app
+  data-block-id="{{ block.id }}"
+  data-api-base="/apps/copy-pilot"
+  data-shop-domain="{{ shop.permanent_domain }}"
+  data-product-id="{{ product.id }}"
+  data-product-title="{{ product.title | escape }}"
+  data-product-type="{{ product.type | escape }}"
+  data-product-vendor="{{ product.vendor | escape }}"
+  data-product-description="{{ product.description | strip_html | escape }}"
+  data-featured-image="{{ product.featured_image | image_url: width: 1024 }}"
+  data-default-language="{{ cp_default_lang }}"
+  data-default-tone="{{ cp_default_tone }}"
+  data-monthly-credits="{{ cp_monthly_credits }}"
+  data-show-billing="{% if block.settings.show_billing %}1{% else %}0{% endif %}"
+>
+  {% comment %} ---------- Top bar: brand + credit meter ---------- {% endcomment %}
+  <header class="cp-topbar">
+    <div class="cp-brand">
+      <span class="cp-logo" aria-hidden="true">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+        </svg>
+      </span>
+      <div class="cp-brand-text">
+        <h2 class="cp-title">{{ cp_heading }}</h2>
+        <p class="cp-subtitle">{{ block.settings.subtitle | default: 'Agentic SEO & Sales Copywriter' }}</p>
+      </div>
+    </div>
+
+    <div class="cp-credit-meter" data-cp-credit-meter>
+      <div class="cp-credit-head">
+        <span class="cp-credit-plan" data-cp-plan-name>â€”</span>
+        <span class="cp-credit-count" data-cp-credit-count>0 / {{ cp_monthly_credits }} {{ 'creditsUsed' | t: default: 'credits used' }}</span>
+      </div>
+      <div class="cp-credit-track">
+        <div class="cp-credit-fill" data-cp-credit-fill style="width:0%"></div>
+      </div>
+    </div>
+  </header>
+
+  <nav class="cp-tabs" role="tablist">
+    <button type="button" class="cp-tab cp-tab-active" data-cp-tab="generate" role="tab">Generate</button>
+    <button type="button" class="cp-tab" data-cp-tab="intelligence" role="tab">Intelligence</button>
+    <button type="button" class="cp-tab" data-cp-tab="catalog" role="tab">Catalog</button>
+    <button type="button" class="cp-tab" data-cp-tab="brand" role="tab">Brand</button>
+    <button type="button" class="cp-tab" data-cp-tab="media" role="tab">Media</button>
+    <button type="button" class="cp-tab" data-cp-tab="agent" role="tab">Agent</button>
+    <button type="button" class="cp-tab" data-cp-tab="optimize" role="tab">Optimize</button>
+    <button type="button" class="cp-tab" data-cp-tab="plans" role="tab">Plans</button>
+    <button type="button" class="cp-tab" data-cp-tab="assistant" role="tab">Assistant</button>
+  </nav>
+
+  <div data-cp-panel="generate">
+  <div class="cp-grid">
+    {% comment %} ---------- Left column: content generation ---------- {% endcomment %}
+    <div class="cp-col cp-col-main">
+      {% comment %} Tone + language controls {% endcomment %}
+      <section class="cp-card" data-cp-module="controls">
+        <div class="cp-card-head">
+          <h3 class="cp-card-title">{{ 'generatorTitle' | t: default: 'Copy Generator' }}</h3>
+        </div>
+
+        <div class="cp-controls-row">
+          <div class="cp-field">
+            <label for="cpTone-{{ block.id }}">{{ 'toneLabel' | t: default: 'Writing tone' }}</label>
+            <select id="cpTone-{{ block.id }}" class="cp-select" data-cp-tone>
+              <option value="fun"{% if cp_default_tone == 'fun' %} selected{% endif %}>{{ 'toneFun' | t: default: 'Fun' }}</option>
+              <option value="professional"{% if cp_default_tone == 'professional' %} selected{% endif %}>{{ 'toneProfessional' | t: default: 'Professional' }}</option>
+              <option value="luxury"{% if cp_default_tone == 'luxury' %} selected{% endif %}>{{ 'toneLuxury' | t: default: 'Luxury' }}</option>
+              <option value="exciting"{% if cp_default_tone == 'exciting' %} selected{% endif %}>{{ 'toneExciting' | t: default: 'Exciting' }}</option>
+            </select>
+          </div>
+
+          <div class="cp-field">
+            <span class="cp-field-label">{{ 'languagesLabel' | t: default: 'Target languages' }}</span>
+            <div class="cp-lang-group" data-cp-language-group role="group" aria-label="{{ 'languagesLabel' | t: default: 'Target languages' }}">
+              <label class="cp-chip"><input type="checkbox" value="en" data-cp-language {% if cp_default_lang == 'en' %}checked{% endif %}/> <span>EN</span></label>
+              <label class="cp-chip"><input type="checkbox" value="es" data-cp-language {% if cp_default_lang == 'es' %}checked{% endif %}/> <span>ES</span></label>
+              <label class="cp-chip"><input type="checkbox" value="de" data-cp-language {% if cp_default_lang == 'de' %}checked{% endif %}/> <span>DE</span></label>
+              <label class="cp-chip"><input type="checkbox" value="fr" data-cp-language {% if cp_default_lang == 'fr' %}checked{% endif %}/> <span>FR</span></label>
+              <label class="cp-chip"><input type="checkbox" value="tr" data-cp-language {% if cp_default_lang == 'tr' %}checked{% endif %}/> <span>TR</span></label>
+              <label class="cp-chip"><input type="checkbox" value="ar" data-cp-language {% if cp_default_lang == 'ar' %}checked{% endif %}/> <span>AR</span></label>
+              <label class="cp-chip"><input type="checkbox" value="zh" data-cp-language {% if cp_default_lang == 'zh' %}checked{% endif %}/> <span>ZH</span></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="cp-field">
+          <label for="cpKeyword-{{ block.id }}">{{ 'keywordLabel' | t: default: 'Target keyword' }}</label>
+          <input type="text" id="cpKeyword-{{ block.id }}" class="cp-input" data-cp-keyword placeholder="e.g. organic cotton t-shirt" />
+        </div>
+
+        <div class="cp-actions">
+          <button type="button" class="cp-btn cp-btn-secondary" data-cp-action="vision">
+            {{ 'visionAction' | t: default: 'Analyze Image (Gemini Vision)' }}
+          </button>
+          <button type="button" class="cp-btn cp-btn-primary" data-cp-action="generate">
+            Tek tıkla tüm listingi üret
+          </button>
+        </div>
+      </section>
+
+      {% comment %} Generated output {% endcomment %}
+      <section class="cp-card" data-cp-module="output">
+        <div class="cp-card-head">
+          <h3 class="cp-card-title">{{ 'outputTitle' | t: default: 'Generated Content' }}</h3>
+          <span class="cp-status" data-cp-status hidden></span>
+        </div>
+        <div class="cp-output-tabs" data-cp-output-tabs hidden></div>
+        <div class="cp-field">
+          <label>Satış başlığı (ürün title)</label>
+          <input type="text" class="cp-input" data-cp-sales-title maxlength="120" placeholder="Üretilen ürün başlığı…" />
+        </div>
+        <textarea class="cp-output" data-cp-output rows="12" placeholder="{{ 'outputPlaceholder' | t: default: 'Your AI-generated copy will appear here…' }}"></textarea>
+        <div class="cp-field" style="margin-top:10px">
+          <label>Görsel yerleşim planı</label>
+          <textarea class="cp-input" data-cp-image-plan rows="3" placeholder="Hero / detay / açı / bağlam…"></textarea>
+        </div>
+        <div class="cp-meta-grid">
+          <div class="cp-meta-field">
+            <label>{{ 'metaTitleLabel' | t: default: 'Meta Title' }} <em class="cp-count" data-cp-meta-title-count>0/60</em></label>
+            <input type="text" class="cp-input" data-cp-meta-title maxlength="60" />
+          </div>
+          <div class="cp-meta-field">
+            <label>{{ 'metaDescLabel' | t: default: 'Meta Description' }} <em class="cp-count" data-cp-meta-desc-count>0/160</em></label>
+            <textarea class="cp-input" data-cp-meta-desc maxlength="160" rows="2"></textarea>
+          </div>
+        </div>
+        <div class="cp-actions" style="margin-top:12px">
+          <button type="button" class="cp-btn cp-btn-primary" data-cp-action="publish">Publish to Shopify (başlık + açıklama + meta)</button>
+          <span class="cp-publish-status" data-cp-publish-status></span>
+        </div>
+      </section>
+    </div>
+
+    {% comment %} ---------- Right column: SEO score gauge ---------- {% endcomment %}
+    <div class="cp-col cp-col-side">
+      <section class="cp-card cp-card-score" data-cp-module="seo">
+        <h3 class="cp-card-title">{{ 'seoScoreTitle' | t: default: 'SEO Score' }}</h3>
+        <div class="cp-gauge" data-cp-gauge>
+          <svg viewBox="0 0 120 120" class="cp-gauge-svg" aria-hidden="true">
+            <circle class="cp-gauge-track" cx="60" cy="60" r="52" fill="none" stroke-width="12"/>
+            <circle class="cp-gauge-progress" data-cp-gauge-progress cx="60" cy="60" r="52" fill="none" stroke-width="12"
+              stroke-linecap="round" transform="rotate(-90 60 60)"/>
+          </svg>
+          <div class="cp-gauge-center">
+            <span class="cp-gauge-value" data-cp-gauge-value>0</span>
+            <span class="cp-gauge-label" data-cp-gauge-label>{{ 'seoAwaiting' | t: default: 'Awaiting content' }}</span>
+          </div>
+        </div>
+        <ul class="cp-seo-tips" data-cp-seo-tips></ul>
+        <button type="button" class="cp-btn cp-btn-ghost cp-btn-block" data-cp-action="serp">
+          {{ 'serpAction' | t: default: 'Refresh Live SERP Analysis' }}
+        </button>
+      </section>
+    </div>
+  </div>
+  </div>{% comment %} end generate panel {% endcomment %}
+
+  <div data-cp-panel="intelligence" hidden>
+    <div class="cp-grid">
+      <section class="cp-card cp-card-score">
+        <h3 class="cp-card-title">GEO Score (AI Search)</h3>
+        <div class="cp-gauge cp-gauge-sm">
+          <svg viewBox="0 0 120 120" class="cp-gauge-svg"><circle class="cp-gauge-track" cx="60" cy="60" r="52" fill="none" stroke-width="12"/><circle class="cp-gauge-progress" data-cp-geo-progress cx="60" cy="60" r="52" fill="none" stroke-width="12" stroke-linecap="round" transform="rotate(-90 60 60)"/></svg>
+          <div class="cp-gauge-center"><span class="cp-gauge-value" data-cp-geo-value>0</span></div>
+        </div>
+        <ul class="cp-seo-tips" data-cp-geo-tips></ul>
+        <button type="button" class="cp-btn cp-btn-ghost cp-btn-block" data-cp-action="gen-geo">Calculate GEO Score</button>
+      </section>
+      <section class="cp-card">
+        <h3 class="cp-card-title">Structured Data &amp; AI Crawlers</h3>
+        <button type="button" class="cp-btn cp-btn-secondary cp-btn-sm" data-cp-action="gen-schema">Generate schema.org JSON-LD</button>
+        <textarea class="cp-input" data-cp-schema-json rows="4" placeholder="Product schema JSON-LDâ€¦"></textarea>
+        <button type="button" class="cp-btn cp-btn-secondary cp-btn-sm" data-cp-action="gen-llms">Generate llms.txt</button>
+        <textarea class="cp-input" data-cp-llms-txt rows="3" placeholder="llms.txt contentâ€¦"></textarea>
+        <textarea class="cp-input" data-cp-faq-json rows="3" placeholder="FAQ schemaâ€¦" hidden></textarea>
+        <button type="button" class="cp-btn cp-btn-ghost cp-btn-sm" data-cp-action="track-rank">Track Keyword Rank</button>
+        <p data-cp-rank-result class="cp-muted"></p>
+        <div data-cp-analytics-summary class="cp-muted"></div>
+        <button type="button" class="cp-btn cp-btn-ghost cp-btn-sm" data-cp-action="load-analytics">Load Performance</button>
+      </section>
+    </div>
+  </div>
+
+  <div data-cp-panel="catalog" hidden>
+    <section class="cp-card" data-cp-module="audit">
+    <div class="cp-card-head">
+      <h3 class="cp-card-title">{{ 'auditTitle' | t: default: 'Autonomous Store Audit' }}</h3>
+      <button type="button" class="cp-btn cp-btn-primary" data-cp-action="audit">
+        {{ 'auditAction' | t: default: 'Scan Store & Find Gaps' }}
+      </button>
+    </div>
+
+    <div class="cp-audit-toolbar" data-cp-audit-toolbar hidden>
+      <label class="cp-audit-selectall"><input type="checkbox" data-cp-audit-selectall/> {{ 'selectAll' | t: default: 'Select all' }}</label>
+      <button type="button" class="cp-btn cp-btn-secondary cp-btn-sm" data-cp-action="autofix">
+        {{ 'autoFixAction' | t: default: 'Auto-Fix Selected with AI' }}
+      </button>
+    </div>
+
+    <div class="cp-table-wrap" data-cp-audit-wrap hidden>
+      <table class="cp-table">
+        <thead>
+          <tr>
+            <th class="cp-th-check"><span class="cp-visually-hidden">{{ 'select' | t: default: 'Select' }}</span></th>
+            <th>{{ 'productCol' | t: default: 'Product' }}</th>
+            <th>{{ 'issueCol' | t: default: 'Issue' }}</th>
+            <th>{{ 'statusCol' | t: default: 'Status' }}</th>
+          </tr>
+        </thead>
+        <tbody data-cp-audit-body></tbody>
+      </table>
+    </div>
+    <p class="cp-audit-empty" data-cp-audit-empty hidden>{{ 'auditEmpty' | t: default: 'No products scanned yet.' }}</p>
+    </section>
+    <section class="cp-card">
+      <h3 class="cp-card-title">Bulk Queue &amp; Import</h3>
+      <p class="cp-muted">Supports 10,000+ SKUs via batched queue processing.</p>
+      <div class="cp-field"><label>CSV Import</label><input type="file" accept=".csv" data-cp-csv-input class="cp-input"/></div>
+      <div class="cp-field"><label>PIM Connector</label><select data-cp-pim-connector class="cp-select"><option value="akeneo">Akeneo</option><option value="salsify">Salsify</option><option value="csv">CSV/XLSX</option></select></div>
+      <div class="cp-actions">
+        <button type="button" class="cp-btn cp-btn-secondary cp-btn-sm" data-cp-action="import-csv">Import CSV</button>
+        <button type="button" class="cp-btn cp-btn-secondary cp-btn-sm" data-cp-action="import-pim">Import from PIM</button>
+        <button type="button" class="cp-btn cp-btn-primary cp-btn-sm" data-cp-action="queue-run">Run Queue</button>
+      </div>
+      <div class="cp-credit-track" style="margin-top:10px"><div class="cp-credit-fill" data-cp-queue-bar style="width:0%"></div></div>
+      <p data-cp-queue-status class="cp-muted"></p>
+    </section>
+  </div>
+
+  <div data-cp-panel="brand" hidden>
+    <section class="cp-card">
+      <h3 class="cp-card-title">Brand Voice DNA</h3>
+      <button type="button" class="cp-btn cp-btn-secondary" data-cp-action="extract-dna">Extract from Top Products</button>
+      <pre class="cp-code" data-cp-brand-dna></pre>
+      <h3 class="cp-card-title">Content Rules</h3>
+      <textarea class="cp-input" data-cp-brand-rules rows="6" placeholder='{"bannedWords":[],"requiredPhrases":[]}'></textarea>
+      <button type="button" class="cp-btn cp-btn-primary" data-cp-action="save-rules">Save Content Rules</button>
+    </section>
+  </div>
+
+  <div data-cp-panel="media" hidden>
+    <section class="cp-card">
+      <h3 class="cp-card-title">Multi-Image Vision AI</h3>
+      <input type="url" class="cp-input" data-cp-extra-image placeholder="Extra image URL (optional angle)" />
+      <button type="button" class="cp-btn cp-btn-secondary" data-cp-action="multi-vision">Analyze All Images</button>
+      <pre class="cp-code" data-cp-vision-result></pre>
+      <button type="button" class="cp-btn cp-btn-secondary cp-btn-sm" data-cp-action="enrich">Enrich Product Data</button>
+      <pre class="cp-code" data-cp-enrich-result></pre>
+      <button type="button" class="cp-btn cp-btn-secondary cp-btn-sm" data-cp-action="gen-alts">Generate Alt Text</button>
+      <ul data-cp-alt-list class="cp-seo-tips"></ul>
+      <button type="button" class="cp-btn cp-btn-primary cp-btn-sm" data-cp-action="apply-tags">Auto-Tag Product</button>
+      <p data-cp-tags-preview class="cp-muted"></p>
+    </section>
+  </div>
+
+  <div data-cp-panel="agent" hidden>
+    <section class="cp-card">
+      <h3 class="cp-card-title">Self-Healing Catalog Agent</h3>
+      <p class="cp-muted">Autonomous loop: Audit â†’ Enrich â†’ Fix â†’ Publish â†’ Re-audit</p>
+      <p data-cp-agent-status class="cp-muted"></p>
+      <div class="cp-field"><label>Schedule interval (hours)</label><input type="number" class="cp-input" data-cp-agent-interval value="24" min="1"/></div>
+      <div class="cp-actions">
+        <button type="button" class="cp-btn cp-btn-primary" data-cp-action="agent-run">Run Once Now</button>
+        <button type="button" class="cp-btn cp-btn-secondary" data-cp-action="agent-start">Start Scheduler</button>
+        <button type="button" class="cp-btn cp-btn-ghost" data-cp-action="agent-stop">Stop</button>
+      </div>
+      <div class="cp-agent-log" data-cp-agent-log></div>
+    </section>
+  </div>
+
+  <div data-cp-panel="optimize" hidden>
+    <section class="cp-card">
+      <h3 class="cp-card-title">Conversion Optimization (A/B + Bandit)</h3>
+      <button type="button" class="cp-btn cp-btn-secondary" data-cp-action="ab-create">Create A/B Variants</button>
+      <button type="button" class="cp-btn cp-btn-primary" data-cp-action="ab-pick">Pick Winning Variant</button>
+      <p data-cp-ab-status class="cp-muted"></p>
+    </section>
+  </div>
+
+  <div data-cp-panel="plans" hidden>
+    <section class="cp-card">
+      <div class="cp-card-head">
+        <h3 class="cp-card-title">Plans &amp; Pricing</h3>
+        <span class="cp-muted">1 free Â· 3 paid Â· undercut Hypotenuse ($79) &amp; Jasper ($69)</span>
+      </div>
+      <div class="cp-plans-grid" data-cp-plans-grid></div>
+    </section>
+    <section class="cp-card">
+      <div class="cp-card-head">
+        <h3 class="cp-card-title">Credit Packs</h3>
+        <span class="cp-muted">One-time Â· never expire Â· from $0.069 / credit</span>
+      </div>
+      <div class="cp-packs-grid" data-cp-packs-grid></div>
+      <p class="cp-muted" style="margin-top:12px">Compared to Describely at $0.75/product, CopyPilot credit packs keep incremental cost under $0.10 per generation.</p>
+    </section>
+  </div>
+
+  <div data-cp-panel="assistant" hidden>
+    <section class="cp-card">
+      <h3 class="cp-card-title">CopyPilot Sidekick</h3>
+      <div class="cp-chat-log" data-cp-chat-log></div>
+      <div class="cp-chat-input-row">
+        <input type="text" class="cp-input" data-cp-chat-input placeholder="Ask about SEO, bulk audit, publishingâ€¦" />
+        <button type="button" class="cp-btn cp-btn-primary" data-cp-action="chat-send">Send</button>
+      </div>
+    </section>
+  </div>
+</div>
+
+{% comment %} ---------- Billing / Upgrade modal (inside app so actions bind) ---------- {% endcomment %}
+<div class="cp-modal" data-cp-modal hidden role="dialog" aria-modal="true" aria-labelledby="cpModalTitle-{{ block.id }}">
+  <div class="cp-modal-backdrop" data-cp-modal-close></div>
+  <div class="cp-modal-panel cp-modal-wide">
+    <button type="button" class="cp-modal-x" data-cp-modal-close aria-label="{{ 'close' | t: default: 'Close' }}">Ã—</button>
+    <h3 class="cp-modal-title" id="cpModalTitle-{{ block.id }}">{{ 'limitReachedTitle' | t: default: 'Monthly credit limit reached' }}</h3>
+    <p class="cp-modal-text">{{ 'limitReachedText' | t: default: 'Buy a credit pack or upgrade your plan to keep generating.' }}</p>
+    <div class="cp-modal-actions">
+      <button type="button" class="cp-btn cp-btn-secondary" data-cp-action="buy-credits" data-cp-pack="pack_300">
+        Buy Boost 300 â€” $24
+      </button>
+      <button type="button" class="cp-btn cp-btn-primary" data-cp-action="subscribe" data-cp-plan="growth">
+        Upgrade to Growth â€” $49/mo
+      </button>
+    </div>
+    <p class="cp-muted" style="margin-top:12px">Or open the Plans tab for Starter ($19), Scale ($99), and all credit packs.</p>
+  </div>
+</div>
+
+{% endif %}
+
+{% schema %}
+{
+  "name": "CopyPilot AI",
+  "target": "section",
+  "javascript": "copy-pilot-boot.js",
+  "stylesheet": "copy-pilot.css",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Dashboard Heading",
+      "placeholder": "CopyPilot AI"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "placeholder": "Agentic SEO & Sales Copywriter"
+    },
+    {
+      "type": "select",
+      "id": "default_tone",
+      "label": "Default Writing Tone",
+      "default": "professional",
+      "options": [
+        { "value": "fun", "label": "Fun" },
+        { "value": "professional", "label": "Professional" },
+        { "value": "luxury", "label": "Luxury" },
+        { "value": "exciting", "label": "Exciting" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "default_language",
+      "label": "Default Output Language",
+      "default": "en",
+      "options": [
+        { "value": "en", "label": "English" },
+        { "value": "es", "label": "EspaÃ±ol" },
+        { "value": "de", "label": "Deutsch" },
+        { "value": "fr", "label": "FranÃ§ais" },
+        { "value": "tr", "label": "TÃ¼rkÃ§e" },
+        { "value": "ar", "label": "Ø§Ù„Ø¹Ø±Ø¨ÙŠØ©" },
+        { "value": "zh", "label": "ä¸­æ–‡" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "monthly_credits",
+      "label": "Monthly Credit Allowance",
+      "min": 50,
+      "max": 1000,
+      "step": 50,
+      "default": 200,
+      "unit": "cr"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_billing",
+      "label": "Enable billing & credit limits",
+      "default": true
+    }
+  ]
+}
+{% endschema %}

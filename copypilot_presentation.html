@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CopyPilot AI by Fixiby — Merchant Guide &amp; App Review Presentation</title>
+  <style>
+    :root {
+      --ink: #0f172a;
+      --muted: #64748b;
+      --line: #e2e8f0;
+      --teal: #0d9488;
+      --indigo: #4f46e5;
+      --bg: #ffffff;
+      --soft: #f8fafc;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: #0b1220;
+      font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      color: var(--ink);
+    }
+    .deck {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 28px;
+      padding: 32px 16px 64px;
+    }
+    .slide {
+      width: 1280px;
+      height: 720px;
+      background: var(--bg);
+      border-radius: 18px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 24px 80px rgba(0,0,0,.45);
+      flex-shrink: 0;
+    }
+    .slide::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 6px;
+      background: linear-gradient(90deg, var(--indigo), var(--teal));
+    }
+    .geo {
+      position: absolute;
+      right: -80px;
+      top: -80px;
+      width: 320px;
+      height: 320px;
+      border: 2px solid rgba(13,148,136,.18);
+      border-radius: 48px;
+      transform: rotate(18deg);
+      pointer-events: none;
+    }
+    .geo2 {
+      position: absolute;
+      left: -60px;
+      bottom: -90px;
+      width: 260px;
+      height: 260px;
+      border: 2px solid rgba(79,70,229,.15);
+      border-radius: 999px;
+      pointer-events: none;
+    }
+    .pad { padding: 56px 64px 48px; height: 100%; position: relative; z-index: 1; }
+    .eyebrow {
+      color: var(--teal);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      margin: 0 0 12px;
+    }
+    h1 { font-size: 48px; line-height: 1.1; letter-spacing: -0.03em; margin: 0 0 16px; }
+    h2 { font-size: 36px; line-height: 1.15; letter-spacing: -0.02em; margin: 0 0 18px; }
+    h3 { font-size: 22px; margin: 0 0 10px; }
+    p, li { font-size: 18px; line-height: 1.55; color: #334155; }
+    .lead { font-size: 22px; color: #475569; max-width: 880px; }
+    .footer {
+      position: absolute;
+      left: 64px; right: 64px; bottom: 28px;
+      display: flex; justify-content: space-between;
+      font-size: 13px; color: var(--muted);
+      border-top: 1px solid var(--line); padding-top: 12px;
+    }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+    .card {
+      background: var(--soft);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 22px 24px;
+    }
+    .badge {
+      display: inline-block;
+      background: rgba(13,148,136,.12);
+      color: var(--teal);
+      font-size: 13px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+    }
+    table { width: 100%; border-collapse: collapse; font-size: 17px; }
+    th, td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--line); }
+    th { background: var(--soft); color: #0f172a; }
+    .bar-row { display: grid; grid-template-columns: 180px 1fr 64px; gap: 12px; align-items: center; margin: 14px 0; }
+    .bar { height: 18px; background: #e2e8f0; border-radius: 999px; overflow: hidden; }
+    .bar > span { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--indigo), var(--teal)); }
+    math { font-size: 20px; }
+    .center { display: flex; flex-direction: column; justify-content: center; height: 100%; }
+    .title-slide {
+      background:
+        radial-gradient(ellipse 70% 60% at 85% 20%, rgba(79,70,229,.14), transparent 55%),
+        radial-gradient(ellipse 60% 50% at 10% 90%, rgba(13,148,136,.14), transparent 50%),
+        #fff;
+    }
+  </style>
+</head>
+<body>
+  <div class="deck">
+
+    <!-- 1 -->
+    <section class="slide title-slide">
+      <div class="geo"></div><div class="geo2"></div>
+      <div class="pad center">
+        <p class="eyebrow">Fixiby Software Technologies</p>
+        <h1>CopyPilot AI by Fixiby</h1>
+        <p class="lead">Agentic SEO &amp; Sales Copywriter for Shopify — merchant guide and App Store review briefing.</p>
+        <p style="margin-top:28px;color:#64748b">Contact: <strong>info@fixiby.com</strong> &middot; Site: fixiby.com &middot; Live: fixiby.vercel.app</p>
+      </div>
+      <div class="footer"><span>CopyPilot AI &middot; Developed by Fixiby Software Technologies</span><span>1 / 10</span></div>
+    </section>
+
+    <!-- 2 -->
+    <section class="slide">
+      <div class="geo"></div>
+      <div class="pad">
+        <p class="eyebrow">The problem</p>
+        <h2>Flat product copy kills conversion and SEO</h2>
+        <div class="grid2" style="margin-top:24px">
+          <div class="card">
+            <h3>Merchant pain</h3>
+            <ul>
+              <li>Hours spent rewriting PDPs by hand</li>
+              <li>Meta titles &amp; alts left empty or keyword-stuffed</li>
+              <li>Admin-style bullet dumps that do not sell</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Business impact</h3>
+            <ul>
+              <li>Lower click-through from search &amp; collections</li>
+              <li>Inconsistent brand voice across hundreds of SKUs</li>
+              <li>Fear of tools that overwrite inventory fields</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer"><span>CopyPilot AI &middot; Developed by Fixiby Software Technologies</span><span>2 / 10</span></div>
+    </section>
+
+    <!-- 3 -->
+    <section class="slide">
+      <div class="geo2"></div>
+      <div class="pad">
+        <p class="eyebrow">The solution</p>
+        <h2>Approve-first AI listing packages in Shopify Admin</h2>
+        <div class="grid2" style="margin-top:20px">
+          <div class="card">
+            <span class="badge">Workflow</span>
+            <p>Select market + language → generate SEO + AIDA → review → <strong>Approve &amp; publish</strong>. Nothing changes until the merchant confirms.</p>
+          </div>
+          <div class="card">
+            <span class="badge">Safety</span>
+            <p>Writes title, description, SEO metafields, image alt text. Does <strong>not</strong> mutate variants, inventory, or prices.</p>
+          </div>
+          <div class="card">
+            <span class="badge">Credits</span>
+            <p>Exact rule from product: <strong>1 generation = 1 credit</strong>. Bulk = N credits for N products.</p>
+          </div>
+          <div class="card">
+            <span class="badge">Billing</span>
+            <p>Shopify Billing: Free 10 / Starter $19·50 / Growth $49·150 / Scale $99·400 + Boost packs $9·10 / $24·30 / $69·100.</p>
+          </div>
+        </div>
+      </div>
+      <div class="footer"><span>CopyPilot AI &middot; Developed by Fixiby Software Technologies</span><span>3 / 10</span></div>
+    </section>
+
+    <!-- 4 Feature spotlight 1 -->
+    <section class="slide">
+      <div class="geo"></div>
+      <div class="pad">
+        <p class="eyebrow">Feature spotlight A</p>
+        <h2>SEO + GEO + AIDA generation</h2>
+        <div class="grid2" style="margin-top:18px">
+          <div>
+            <ul>
+              <li>Title Case sales titles (vendor + product words capitalized)</li>
+              <li>Emotional AIDA HTML with FAQ blocks for AI Overviews</li>
+              <li>Uses existing product features when description exists</li>
+              <li>Blocks invented claims (free shipping, awards, “Google ranked”…)</li>
+              <li>Keyword suggestions + optional custom keywords</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Dual analysis scores</h3>
+            <p><strong>SEO /100</strong> — meta length, keyword coverage, image alt.<br/>
+            <strong>GEO /100</strong> — AI search readiness (FAQ, specs, citation-friendly structure for AI Overviews / ChatGPT / Perplexity).</p>
+          </div>
+        </div>
+      </div>
+      <div class="footer"><span>CopyPilot AI &middot; Developed by Fixiby Software Technologies</span><span>4 / 10</span></div>
+    </section>
+
+    <!-- 5 Pricing -->
+    <section class="slide">
+      <div class="geo2"></div>
+      <div class="pad">
+        <p class="eyebrow">Shopify Billing · live plan config</p>
+        <h2>Plans &amp; credit packs</h2>
+        <table style="margin-top:12px">
+          <thead>
+            <tr><th>Plan</th><th>Price</th><th>Credits / mo</th><th>Highlights</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Free</td><td>$0</td><td>10</td><td>TR+EN · SEO+AIDA · publish · Image SEO</td></tr>
+            <tr><td>Starter</td><td>$19</td><td>50</td><td>6 langs · media · brand</td></tr>
+            <tr><td>Growth</td><td>$49</td><td>150</td><td>Bulk generate + publish (Most popular)</td></tr>
+            <tr><td>Scale</td><td>$99</td><td>400</td><td>High-volume bulk · SLA (Best value)</td></tr>
+          </tbody>
+        </table>
+        <div class="card" style="margin-top:18px">
+          <h3>One-time Boost packs</h3>
+          <p>Boost 10 — <strong>$9</strong> &nbsp;·&nbsp; Boost 30 — <strong>$24</strong> &nbsp;·&nbsp; Boost 100 — <strong>$69</strong><br/>
+          Rule: <strong>1 generation = 1 credit</strong>. Bulk of N products = N credits.</p>
+        </div>
+      </div>
+      <div class="footer"><span>CopyPilot AI &middot; Developed by Fixiby Software Technologies</span><span>5 / 10</span></div>
+    </section>
+
+    <!-- 6 Metrics -->
+    <section class="slide">
+      <div class="pad">
+        <p class="eyebrow">Performance framing</p>
+        <h2>How we think about listing lift</h2>
+        <div class="bar-row"><div>Listing completeness</div><div class="bar"><span style="width:92%"></span></div><div>92%</div></div>
+        <div class="bar-row"><div>Meta coverage</div><div class="bar"><span style="width:86%"></span></div><div>86%</div></div>
+        <div class="bar-row"><div>Merchant edit time</div><div class="bar"><span style="width:38%"></span></div><div>−62%</div></div>
+        <div class="card" style="margin-top:18px">
+          <h3>Illustrative relationships (not a guarantee)</h3>
+          <p>
+            Conversion rate:
+            <math display="block">
+              <mrow>
+                <mi>CR</mi><mo>=</mo>
+                <mfrac><mrow><mi>Orders</mi></mrow><mrow><mi>Sessions</mi></mrow></mfrac>
+              </mrow>
+            </math>
+            Click-through from search impression:
+            <math display="block">
+              <mrow>
+                <mi>CTR</mi><mo>=</mo>
+                <mfrac><mrow><mi>Clicks</mi></mrow><mrow><mi>Impressions</mi></mrow></mfrac>
+              </mrow>
+            </math>
+          </p>
+          <p style="font-size:15px;color:#64748b;margin:0">Bars are illustrative for review briefings; live results vary by catalog quality and traffic mix.</p>
+        </div>
+      </div>
+      <div class="footer"><span>CopyPilot AI &middot; Developed by Fixiby Software Technologies</span><span>6 / 10</span></div>
+    </section>
+
+    <!-- 7 Tech -->
+    <section class="slide">
+      <div class="geo"></div>
+      <div class="pad">
+        <p class="eyebrow">Technical posture</p>
+        <h2>Storefront PageSpeed stays merchant-controlled</h2>
+        <ul>
+          <li>Primary product work happens in <strong>Admin UI extension</strong> — not on every storefront page render</li>
+          <li>Theme app extension is gated with <code>request.design_mode</code> so shoppers don’t load the editor UI</li>
+          <li>No requirement to inject heavy third-party chat widgets for core copy generation</li>
+          <li>Compliance webhooks on <code>fixiby.vercel.app</code> with HMAC verification (401 on invalid signatures)</li>
+          <li>Least-privilege scopes: products + themes only — no customer/order access</li>
+        </ul>
+        <div class="card" style="margin-top:16px"><strong>Reviewer note:</strong> Theme scripts used for design-mode tooling should not block critical storefront path for average visitors.</div>
+      </div>
+      <div class="footer"><span>CopyPilot AI &middot; Developed by Fixiby Software Technologies</span><span>7 / 10</span></div>
+    </section>
+
+    <!-- 8 Comparison -->
+    <section class="slide">
+      <div class="pad">
+        <p class="eyebrow">Comparison</p>
+        <h2>CopyPilot AI vs. manual listing work</h2>
+        <table style="margin-top:18px">
+          <thead>
+            <tr><th>Dimension</th><th>Manual</th><th>CopyPilot AI</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Draft speed</td><td>Hours / category</td><td>Seconds per product draft</td></tr>
+            <tr><td>Structure</td><td>Inconsistent</td><td>AIDA + SEO meta pack</td></tr>
+            <tr><td>Safety</td><td>Risk of inventory edits</td><td>Variant/stock fields preserved</td></tr>
+            <tr><td>Scale</td><td>Linear headcount</td><td>Bulk on Growth / Scale plans</td></tr>
+            <tr><td>Cost model</td><td>Agency retainers</td><td>Credits + clear $0–$99 plans</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="footer"><span>CopyPilot AI &middot; Developed by Fixiby Software Technologies</span><span>8 / 10</span></div>
+    </section>
+
+    <!-- 9 Growth chart -->
+    <section class="slide">
+      <div class="pad">
+        <p class="eyebrow">12-month organic traffic illustration</p>
+        <h2>Catalog freshness compounds SEO exposure</h2>
+        <svg viewBox="0 0 1100 340" width="1100" height="340" role="img" aria-label="Organic traffic area chart">
+          <defs>
+            <linearGradient id="area" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#4f46e5" stop-opacity="0.45"/>
+              <stop offset="100%" stop-color="#0d9488" stop-opacity="0.05"/>
+            </linearGradient>
+          </defs>
+          <rect x="0" y="0" width="1100" height="340" fill="#f8fafc" rx="16"/>
+          <g stroke="#e2e8f0" stroke-width="1">
+            <line x1="60" y1="40" x2="60" y2="290"/>
+            <line x1="60" y1="290" x2="1040" y2="290"/>
+          </g>
+          <path d="M60,250 L150,240 L240,220 L330,200 L420,185 L510,160 L600,145 L690,120 L780,105 L870,90 L960,78 L1040,55 L1040,290 L60,290 Z" fill="url(#area)"/>
+          <path d="M60,250 L150,240 L240,220 L330,200 L420,185 L510,160 L600,145 L690,120 L780,105 L870,90 L960,78 L1040,55" fill="none" stroke="#0d9488" stroke-width="3"/>
+          <text x="60" y="320" fill="#64748b" font-size="14">M1</text>
+          <text x="500" y="320" fill="#64748b" font-size="14">M6</text>
+          <text x="1000" y="320" fill="#64748b" font-size="14">M12</text>
+          <text x="70" y="36" fill="#0f172a" font-size="16" font-weight="700">Illustrative organic sessions index (100 → ~210)</text>
+        </svg>
+        <p style="font-size:14px;color:#64748b;margin:8px 0 0">Illustration for briefing — not a store-specific analytics promise.</p>
+      </div>
+      <div class="footer"><span>CopyPilot AI &middot; Developed by Fixiby Software Technologies</span><span>9 / 10</span></div>
+    </section>
+
+    <!-- 10 Q&A -->
+    <section class="slide title-slide">
+      <div class="geo"></div><div class="geo2"></div>
+      <div class="pad center">
+        <p class="eyebrow">App Store review Q&amp;A</p>
+        <h2>Transparent answers for reviewers</h2>
+        <div class="grid2" style="margin-top:12px">
+          <div class="card">
+            <h3>Customer data?</h3>
+            <p>No customer/order scopes. Compliance webhooks acknowledge requests and return 200 after HMAC validation.</p>
+          </div>
+          <div class="card">
+            <h3>Privacy URL</h3>
+            <p>https://fixiby.vercel.app/legal/privacy-en.html</p>
+          </div>
+          <div class="card">
+            <h3>Support</h3>
+            <p>Single mailbox: <strong>info@fixiby.com</strong></p>
+          </div>
+          <div class="card">
+            <h3>Developer</h3>
+            <p><strong>Fixiby Software Technologies</strong> &middot; fixiby.com</p>
+          </div>
+        </div>
+        <p style="margin-top:28px;font-size:22px">Thank you — we build CopyPilot AI to help merchants ship better listings safely.</p>
+      </div>
+      <div class="footer"><span>CopyPilot AI &middot; Developed by Fixiby Software Technologies</span><span>10 / 10</span></div>
+    </section>
+
+  </div>
+</body>
+</html>

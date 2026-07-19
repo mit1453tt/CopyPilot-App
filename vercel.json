@@ -1,0 +1,13 @@
+{
+  "rewrites": [
+    { "source": "/webhooks/compliance", "destination": "/api/webhooks/compliance" },
+    { "source": "/webhooks/app/uninstalled", "destination": "/api/webhooks/app-uninstalled" },
+    { "source": "/presentation", "destination": "/copypilot_presentation.html" }
+  ],
+  "headers": [
+    {
+      "source": "/legal/(.*)",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=3600" }]
+    }
+  ]
+}

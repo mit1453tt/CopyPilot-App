@@ -1,0 +1,25 @@
+{
+  "name": "ui-ext-hosted-jam",
+  "version": "1.0.0",
+  "license": "UNLICENSED",
+  "workspaces": ["extensions/*"],
+  "scripts": {
+    "shopify": "shopify",
+    "build": "shopify app build",
+    "dev": "shopify app dev",
+    "info": "shopify app info",
+    "generate": "shopify app generate",
+    "deploy": "shopify app deploy",
+    "compliance": "node server/compliance.mjs",
+    "legal:serve": "node server/compliance.mjs",
+    "qa": "node scripts/qa-copy-engine.mjs",
+    "qa:security": "node scripts/qa-security-scan.mjs",
+    "qa:compliance": "node scripts/qa-compliance.mjs"
+  },
+  "dependencies": {},
+  "trustedDependencies": [
+    "@shopify/plugin-cloudflare"
+  ],
+  "author": "mitch",
+  "private": true
+}

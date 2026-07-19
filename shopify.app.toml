@@ -1,0 +1,39 @@
+# CopyPilot AI — developed by Fixiby Software Technologies
+
+client_id = "a1d147a90082b0a16b0f6d22f77a527f"
+name = "CopyPilot AI"
+application_url = "https://fixiby.vercel.app"
+embedded = true
+
+[webhooks]
+api_version = "2026-10"
+
+# Mandatory App Store compliance webhooks (HMAC verified via Vercel API routes).
+[[webhooks.subscriptions]]
+compliance_topics = [ "customers/data_request", "customers/redact", "shop/redact" ]
+uri = "/api/webhooks/compliance"
+
+[[webhooks.subscriptions]]
+topics = [ "app/uninstalled" ]
+uri = "/api/webhooks/app-uninstalled"
+
+[access_scopes]
+scopes = "read_products,read_themes,write_products,write_themes"
+
+[access.admin]
+direct_api_mode = "online"
+embedded_app_direct_api_access = true
+
+[auth]
+redirect_urls = [
+  "https://fixiby.vercel.app/api/auth",
+  "https://fixiby.vercel.app/auth/callback"
+]
+
+[build]
+automatically_update_urls_on_dev = true
+
+[app_proxy]
+url = "/apps/proxy"
+prefix = "apps"
+subpath = "copy-pilot"

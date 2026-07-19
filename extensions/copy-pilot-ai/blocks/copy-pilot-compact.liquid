@@ -1,0 +1,82 @@
+{% comment %}
+  CopyPilot AI â€” Compact Product Embed
+  Lightweight block for product pages (admin-editor style quick actions).
+{% endcomment %}
+
+{% comment %} MERCHANT-ONLY: live storefront musteriye GOSTERILMEZ {% endcomment %}
+{% if request.design_mode %}
+<script src="{{ 'copy-pilot-core.js' | asset_url }}" defer></script>
+<script src="{{ 'copy-pilot-db.js' | asset_url }}" defer></script>
+<script src="{{ 'copy-pilot-gemini.js' | asset_url }}" defer></script>
+<script src="{{ 'copy-pilot-vision.js' | asset_url }}" defer></script>
+<script src="{{ 'copy-pilot-serp.js' | asset_url }}" defer></script>
+<script src="{{ 'copy-pilot-i18n.js' | asset_url }}" defer></script>
+<script src="{{ 'copy-pilot-billing.js' | asset_url }}" defer></script>
+<script src="{{ 'copy-pilot-sync.js' | asset_url }}" defer></script>
+<script src="{{ 'copy-pilot.js' | asset_url }}" defer></script>
+<script src="{{ 'copy-pilot-features.js' | asset_url }}" defer></script>
+
+<div
+  class="copy-pilot-app copy-pilot-compact"
+  data-copy-pilot-app
+  data-block-id="{{ block.id }}"
+  data-api-base="/apps/copy-pilot"
+  data-shop-domain="{{ shop.permanent_domain }}"
+  data-product-id="{{ product.id }}"
+  data-product-title="{{ product.title | escape }}"
+  data-product-vendor="{{ product.vendor | escape }}"
+  data-product-description="{{ product.description | strip_html | escape }}"
+  data-featured-image="{{ product.featured_image | image_url: width: 1024 }}"
+  data-default-language="{{ block.settings.default_language | default: 'en' }}"
+  data-default-tone="{{ block.settings.default_tone | default: 'professional' }}"
+  data-monthly-credits="25"
+  data-show-billing="0"
+>
+  <div class="cp-compact-bar">
+    <strong>CopyPilot AI</strong>
+    <button type="button" class="cp-btn cp-btn-sm cp-btn-secondary" data-cp-action="vision">Vision</button>
+    <button type="button" class="cp-btn cp-btn-sm cp-btn-primary" data-cp-action="generate">Tek tık listing</button>
+    <button type="button" class="cp-btn cp-btn-sm cp-btn-ghost" data-cp-action="publish">Publish</button>
+  </div>
+  <input type="text" class="cp-input" data-cp-sales-title placeholder="Satış başlığı" maxlength="120" />
+  <textarea class="cp-output" data-cp-output rows="4" placeholder="Ürün açıklaması…"></textarea>
+  <textarea class="cp-input" data-cp-image-plan rows="2" placeholder="Görsel plan…" hidden></textarea>
+  <input type="hidden" data-cp-meta-title />
+  <input type="hidden" data-cp-meta-desc />
+  <input type="hidden" data-cp-keyword value="{{ product.title | escape }}" />
+  <select data-cp-tone hidden><option value="professional" selected>professional</option></select>
+  <label class="cp-chip" hidden><input type="checkbox" value="en" data-cp-language checked/> EN</label>
+</div>
+
+{% endif %}
+
+{% schema %}
+{
+  "name": "CopyPilot AI (Compact)",
+  "target": "section",
+  "javascript": "copy-pilot-boot.js",
+  "stylesheet": "copy-pilot.css",
+  "settings": [
+    {
+      "type": "select",
+      "id": "default_tone",
+      "label": "Default Tone",
+      "default": "professional",
+      "options": [
+        { "value": "professional", "label": "Professional" },
+        { "value": "luxury", "label": "Luxury" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "default_language",
+      "label": "Default Language",
+      "default": "en",
+      "options": [
+        { "value": "en", "label": "English" },
+        { "value": "tr", "label": "TÃ¼rkÃ§e" }
+      ]
+    }
+  ]
+}
+{% endschema %}

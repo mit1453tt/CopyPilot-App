@@ -1,0 +1,55 @@
+{
+  "blocks": {
+    "copy-pilot": {
+      "name": "CopyPilot AI",
+      "settings": {
+        "heading": {
+          "label": "Dashboard Heading",
+          "placeholder": "CopyPilot AI"
+        },
+        "subtitle": {
+          "label": "Subtitle",
+          "placeholder": "Agentic SEO & Sales Copywriter"
+        },
+        "default_tone": {
+          "label": "Default Writing Tone",
+          "options__fun": "Fun",
+          "options__professional": "Professional",
+          "options__luxury": "Luxury",
+          "options__exciting": "Exciting"
+        },
+        "default_language": {
+          "label": "Default Output Language",
+          "options__en": "English",
+          "options__es": "Español",
+          "options__de": "Deutsch",
+          "options__fr": "Français",
+          "options__tr": "Türkçe",
+          "options__ar": "العربية",
+          "options__zh": "中文"
+        },
+        "monthly_credits": {
+          "label": "Monthly Credit Allowance"
+        },
+        "show_billing": {
+          "label": "Enable billing & credit limits"
+        }
+      }
+    },
+    "copy-pilot-compact": {
+      "name": "CopyPilot AI (Compact)",
+      "settings": {
+        "default_tone": {
+          "label": "Default Tone",
+          "options__professional": "Professional",
+          "options__luxury": "Luxury"
+        },
+        "default_language": {
+          "label": "Default Language",
+          "options__en": "English",
+          "options__tr": "Türkçe"
+        }
+      }
+    }
+  }
+}

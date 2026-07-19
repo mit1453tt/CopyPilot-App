@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<title>CopyPilot AI — Kişisel Deneme Sunumu</title>
+<style>
+  @page { size: A4 landscape; margin: 0; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Segoe UI", "Trebuchet MS", system-ui, sans-serif;
+    color: #0f1c2e;
+    background: #0b1220;
+  }
+  .slide {
+    width: 297mm;
+    height: 210mm;
+    padding: 18mm 20mm;
+    page-break-after: always;
+    break-after: page;
+    position: relative;
+    overflow: hidden;
+    background:
+      radial-gradient(ellipse 80% 60% at 100% 0%, rgba(14, 165, 162, 0.18), transparent 55%),
+      radial-gradient(ellipse 70% 50% at 0% 100%, rgba(30, 58, 95, 0.35), transparent 50%),
+      linear-gradient(145deg, #f7fafc 0%, #eef3f7 45%, #e8eef4 100%);
+  }
+  .slide:last-child { page-break-after: auto; }
+  .eyebrow {
+    font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: #0ea5a2; font-weight: 700; margin: 0 0 8px;
+  }
+  h1 {
+    font-size: 42px; line-height: 1.1; margin: 0 0 12px;
+    color: #12253f; letter-spacing: -0.02em;
+  }
+  h2 {
+    font-size: 32px; margin: 0 0 14px; color: #12253f; letter-spacing: -0.02em;
+  }
+  h3 { font-size: 18px; margin: 0 0 8px; color: #1e3a5f; }
+  p, li { font-size: 15.5px; line-height: 1.45; color: #334155; }
+  .lead { font-size: 18px; max-width: 85%; color: #475569; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 12px; }
+  .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 12px; }
+  .card {
+    background: rgba(255,255,255,0.82);
+    border: 1px solid rgba(30,58,95,0.12);
+    border-radius: 14px;
+    padding: 14px 16px;
+    box-shadow: 0 8px 24px rgba(15, 28, 46, 0.06);
+  }
+  .card strong { color: #0f1c2e; }
+  .num {
+    display: inline-flex; width: 28px; height: 28px; border-radius: 50%;
+    align-items: center; justify-content: center;
+    background: #12253f; color: #fff; font-weight: 700; font-size: 13px;
+    margin-right: 8px;
+  }
+  .step { display: flex; gap: 10px; margin: 10px 0; align-items: flex-start; }
+  .step p { margin: 2px 0 0; }
+  .tag {
+    display: inline-block; padding: 4px 10px; border-radius: 999px;
+    background: #12253f; color: #fff; font-size: 12px; font-weight: 600;
+  }
+  .tag.soft { background: #0ea5a2; }
+  .footer {
+    position: absolute; left: 20mm; right: 20mm; bottom: 10mm;
+    display: flex; justify-content: space-between; font-size: 11px; color: #64748b;
+  }
+  .hero-brand { font-size: 54px; font-weight: 800; color: #12253f; margin: 24px 0 8px; letter-spacing: -0.03em; }
+  .checklist li { margin: 6px 0; }
+  code, .mono {
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 12.5px; background: #e8eef4; padding: 2px 6px; border-radius: 4px;
+  }
+  ul { margin: 8px 0 0 18px; padding: 0; }
+  .warn {
+    border-left: 4px solid #f59e0b; background: #fffbeb; padding: 10px 12px;
+    border-radius: 0 10px 10px 0; margin-top: 12px;
+  }
+  .ok {
+    border-left: 4px solid #0ea5a2; background: #ecfeff; padding: 10px 12px;
+    border-radius: 0 10px 10px 0; margin-top: 12px;
+  }
+</style>
+</head>
+<body>
+
+<!-- 1 -->
+<section class="slide">
+  <p class="eyebrow">Kişisel kullanım · Test rehberi</p>
+  <div class="hero-brand">CopyPilot AI</div>
+  <p class="lead">Agentic SEO &amp; Sales Copywriter — eklentinin nasıl çalıştığı ve <strong>tüm özellikleri kendiniz denemeniz</strong> için adım adım sunum.</p>
+  <div class="grid3" style="margin-top:28px">
+    <div class="card"><h3>Ne?</h3><p>Mağaza sahibi için AI ürün açıklaması, SEO skor ve toplu denetim paneli.</p></div>
+    <div class="card"><h3>Nerede?</h3><p>Ayrı Shopify uygulaması: <span class="mono">CopyPilot-App</span> · Theme Editor + Admin App Home.</p></div>
+    <div class="card"><h3>Kim görmez?</h3><p>Canlı vitrinde müşteri paneli görmez. Sadece tasarım modu / Admin.</p></div>
+  </div>
+  <div class="footer"><span>CopyPilot AI · Kişisel deneme sunumu</span><span>1 / 10</span></div>
+</section>
+
+<!-- 2 -->
+<section class="slide">
+  <p class="eyebrow">Mimari</p>
+  <h2>Sistem nasıl çalışıyor?</h2>
+  <div class="grid2">
+    <div class="card">
+      <h3>1) Theme Extension</h3>
+      <ul>
+        <li>Blok: <span class="mono">CopyPilot AI</span></li>
+        <li>UI: kredi, ton, dil, Vision, Generate, sekmeler</li>
+        <li>Canlı vitrin: <strong>gizli</strong> (<span class="mono">design_mode</span>)</li>
+        <li>Theme Editor’da tam panel görünür</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>2) Backend / veri</h3>
+      <ul>
+        <li>Admin krediler: Shopify metafield <span class="mono">copypilot.credits</span></li>
+        <li>Supabase <span class="mono">copypilot_*</span> tabloları: RLS kilitli (anon kapalı)</li>
+        <li>Gemini key: sunucu <span class="mono">.env</span> (gizli)</li>
+        <li>Asıl ürün yüzeyi: Admin App Home</li>
+      </ul>
+    </div>
+  </div>
+  <div class="ok"><strong>Akış:</strong> Ülke+dil → SEO+AIDA üret → SEO/GEO skor → Onayla &amp; yayınla (varyant/stok bozulmaz)</div>
+  <div class="footer"><span>CopyPilot AI · Kişisel deneme sunumu</span><span>2 / 10</span></div>
+</section>
+
+<!-- 3 -->
+<section class="slide">
+  <p class="eyebrow">Başlangıç</p>
+  <h2>Sunucuyu açın (zorunlu)</h2>
+  <div class="step"><span class="num">1</span><div><h3>baslat.cmd</h3><p><span class="mono">C:\Users\TUNAHAN\CopyPilot-App\baslat.cmd</span> — pencereyi kapatmayın. <strong>Ready</strong> bekleyin.</p></div></div>
+  <div class="step"><span class="num">2</span><div><h3>Uygulamayı kurun</h3><p>Admin → Apps → <strong>CopyPilot AI</strong> (yüklü değilse Install linkine tıklayın).</p></div></div>
+  <div class="step"><span class="num">3</span><div><h3>Theme Editor</h3><p>Online Store → Themes → Customize → Add section/block → Apps → <strong>CopyPilot AI</strong> → Save.</p></div></div>
+  <div class="step"><span class="num">4</span><div><h3>Önemli</h3><p>Paneli denemek için <strong>Customize (tasarım modu)</strong> içinde kalın. Canlı mağaza önizlemesinde müşteri gibi panel görünmez — bu bilinçli.</p></div></div>
+  <div class="warn"><strong>Port çakışması:</strong> İkinci <span class="mono">baslat.cmd</span> açmayın. Bir tane Ready yeterli.</div>
+  <div class="footer"><span>CopyPilot AI · Kişisel deneme sunumu</span><span>3 / 10</span></div>
+</section>
+
+<!-- 4 -->
+<section class="slide">
+  <p class="eyebrow">Generate sekmesi</p>
+  <h2>Metin üretimi — tek tek deneyin</h2>
+  <div class="grid2">
+    <div class="card">
+      <h3>Kontroller</h3>
+      <ul class="checklist">
+        <li>☐ Tone: Fun / Professional / Luxury / Exciting</li>
+        <li>☐ Diller: EN, ES, DE, FR, TR, AR, ZH (çoklu seçim)</li>
+        <li>☐ Target keyword yazın (örn. <em>premium snowboard</em>)</li>
+        <li>☐ <strong>Analyze Image (Vision)</strong></li>
+        <li>☐ <strong>Generate Sales Copy</strong></li>
+        <li>☐ SEO skor dairesini izleyin (0–100)</li>
+        <li>☐ Meta title / description dolsun</li>
+        <li>☐ Refresh Live SERP Analysis</li>
+        <li>☐ Publish to Shopify (mock olabilir)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Beklenen çıktı</h3>
+      <ul>
+        <li>Uzun, çok paragraflı metin</li>
+        <li>Semboller: ★ ✦ ✓ • → ▸</li>
+        <li>Bullet + CTA</li>
+        <li>Keyword / SERP kelimeleri metinde</li>
+        <li>Kredi: örn. Free 0/10 → 1/10…</li>
+      </ul>
+      <p style="margin-top:12px"><span class="tag soft">İpucu</span> Keyword boşsa skor daha düşük kalabilir — hedef kelime yazın.</p>
+    </div>
+  </div>
+  <div class="footer"><span>CopyPilot AI · Kişisel deneme sunumu</span><span>4 / 10</span></div>
+</section>
+
+<!-- 5 -->
+<section class="slide">
+  <p class="eyebrow">Diğer sekmeler</p>
+  <h2>Tüm sekmeleri gezin</h2>
+  <div class="grid3">
+    <div class="card"><h3>Intelligence</h3><p>Admin’de <strong>SEO / GEO</strong> skorları (0–100). GEO = AI Overviews / ChatGPT hazırlığı.</p></div>
+    <div class="card"><h3>Catalog</h3><p><strong>Mağazayı Tara</strong> → eksik açıklamalı ürün tablosu → seç → Toplu düzelt / Auto-Fix.</p></div>
+    <div class="card"><h3>Brand</h3><p>Brand DNA çıkar, içerik kurallarını kaydet. Üretim dilini markaya yaklaştırır.</p></div>
+    <div class="card"><h3>Media</h3><p>Multi-image Vision, bulk alt-text üretimi.</p></div>
+    <div class="card"><h3>Agent</h3><p>Self-healing agent start/stop/run — otonom tarama simülasyonu.</p></div>
+    <div class="card"><h3>Optimize</h3><p>A/B bandit, sıralama / analytics mock panelleri.</p></div>
+    <div class="card"><h3>Plans</h3><p>Free 10 · Starter $19/50 · Growth $49/150 · Scale $99/400 · Boost $9/10 · $24/30 · $69/100.</p></div>
+    <div class="card"><h3>Assistant</h3><p>Sidekick sohbet — SEO / audit hakkında soru yazın.</p></div>
+    <div class="card"><h3>Krediler</h3><p>Limit bitince modal: ekstra kredi veya plan yükselt.</p></div>
+  </div>
+  <div class="footer"><span>CopyPilot AI · Kişisel deneme sunumu</span><span>5 / 10</span></div>
+</section>
+
+<!-- 6 -->
+<section class="slide">
+  <p class="eyebrow">Admin</p>
+  <h2>Apps → CopyPilot AI (App Home)</h2>
+  <p class="lead">Admin’de uygulama açıldığında boş “Find this app…” yerine App Home paneli gelmeli (dev sunucu Ready iken).</p>
+  <div class="grid2">
+    <div class="card">
+      <h3>Ne görürsünüz?</h3>
+      <ul>
+        <li>Müşteri görmez uyarısı</li>
+        <li>Theme Editor’a git butonları</li>
+        <li>Blok / ayar nerede yapılır özeti</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Sağ panel ayarları (Theme)</h3>
+      <ul>
+        <li>Heading / subtitle</li>
+        <li>Default tone &amp; language</li>
+        <li>Monthly credits</li>
+        <li>Billing açık/kapalı</li>
+      </ul>
+    </div>
+  </div>
+  <div class="ok">Blok ayarları = Theme Customize’da bloğu seç → sağ sidebar. App Home = yönlendirme ve magaza sahibi girişi.</div>
+  <div class="footer"><span>CopyPilot AI · Kişisel deneme sunumu</span><span>6 / 10</span></div>
+</section>
+
+<!-- 7 -->
+<section class="slide">
+  <p class="eyebrow">Veri &amp; güvenlik</p>
+  <h2>Supabase + Gemini</h2>
+  <div class="grid2">
+    <div class="card">
+      <h3>copypilot_shops</h3>
+      <p>shop_domain, plan_name, monthly_credits, used_credits, reset_date, shopify_charge_id</p>
+      <h3 style="margin-top:12px">copypilot_history</h3>
+      <p>Her generate kaydı: product_id, title, description, seo_score</p>
+    </div>
+    <div class="card">
+      <h3>Deneme checklist</h3>
+      <ul class="checklist">
+        <li>☐ Generate sonrası kredi artıyor mu?</li>
+        <li>☐ Supabase’de history satırı oluşuyor mu?</li>
+        <li>☐ Gemini key sadece <span class="mono">.env</span>’de mi?</li>
+        <li>☐ Theme JS’de API key yok mu?</li>
+        <li>☐ Size Wizard tabloları bozulmadı mı?</li>
+      </ul>
+    </div>
+  </div>
+  <div class="warn">Gemini çağrısı App Proxy + sunucu gerektirir. Extension-only app’te proxy yoksa metin yerel zengin AIDA motoruna düşer — yine uzun/engaging üretir.</div>
+  <div class="footer"><span>CopyPilot AI · Kişisel deneme sunumu</span><span>7 / 10</span></div>
+</section>
+
+<!-- 8 -->
+<section class="slide">
+  <p class="eyebrow">Tam test turu</p>
+  <h2>30 dakikalık “her şeyi dene” rotası</h2>
+  <div class="grid2">
+    <div class="card">
+      <ol>
+        <li>baslat.cmd → Ready</li>
+        <li>Theme Customize → CopyPilot bloğu</li>
+        <li>Generate: 4 ton × 2 dil</li>
+        <li>Keyword’lü / keyword’süz skor farkı</li>
+        <li>SERP refresh</li>
+        <li>Catalog audit + autofix</li>
+        <li>Brand DNA + rules</li>
+        <li>Media multi-vision</li>
+      </ol>
+    </div>
+    <div class="card">
+      <ol start="9">
+        <li>Agent start → run → stop</li>
+        <li>Optimize A/B</li>
+        <li>Plans: upgrade + credit pack</li>
+        <li>Kredi bitene kadar generate (modal)</li>
+        <li>Assistant chat</li>
+        <li>Canlı storefront kontrol (panel YOK)</li>
+        <li>Admin App Home yenile</li>
+        <li>Supabase history kontrol</li>
+      </ol>
+    </div>
+  </div>
+  <div class="footer"><span>CopyPilot AI · Kişisel deneme sunumu</span><span>8 / 10</span></div>
+</section>
+
+<!-- 9 -->
+<section class="slide">
+  <p class="eyebrow">Sorun giderme</p>
+  <h2>Takılırsa</h2>
+  <div class="grid2">
+    <div class="card">
+      <h3>Sekmeler açılmıyor</h3>
+      <p>Hard refresh (Ctrl+F5). Dev Ready mi? Tek baslat penceresi mi?</p>
+      <h3 style="margin-top:10px">Boş Admin sayfası</h3>
+      <p>App Home için Ready şart. Sayfayı yenileyin.</p>
+      <h3 style="margin-top:10px">EADDRINUSE / port</h3>
+      <p>Eski terminali kapatın; <span class="mono">baslat.cmd</span> 9310/9297 kullanır.</p>
+    </div>
+    <div class="card">
+      <h3>Metin kısa / zayıf</h3>
+      <p>Tone + keyword doldurun, Generate’i tekrarlayın. Vision önce çalıştırın.</p>
+      <h3 style="margin-top:10px">ENOTFOUND (Google storage)</h3>
+      <p>Ağ/DNS; biraz bekleyip tekrar <span class="mono">shopify app dev</span>.</p>
+      <h3 style="margin-top:10px">Müşteri paneli görüyor</h3>
+      <p>Canlı tema cache. Customize dışındaki sayfada görünmemeli; hâlâ varsa kaydedilmiş eski assets — Soft refresh / tema kaydet.</p>
+    </div>
+  </div>
+  <div class="footer"><span>CopyPilot AI · Kişisel deneme sunumu</span><span>9 / 10</span></div>
+</section>
+
+<!-- 10 -->
+<section class="slide">
+  <p class="eyebrow">Özet</p>
+  <h2>Sizin için tek satır</h2>
+  <p class="lead"><strong>CopyPilot</strong> = mağaza sahibinin AI copy + SEO kokpiti. Müşteriye değil size. Dev açıkken Theme Editor’da tüm sekmeleri, Admin’de App Home’u, Supabase’de kayıtları deneyin.</p>
+  <div class="grid3" style="margin-top:22px">
+    <div class="card"><span class="tag">Klasör</span><p style="margin-top:8px"><span class="mono">C:\Users\TUNAHAN\CopyPilot-App</span></p></div>
+    <div class="card"><span class="tag soft">Başlat</span><p style="margin-top:8px"><span class="mono">baslat.cmd</span></p></div>
+    <div class="card"><span class="tag">Mağaza</span><p style="margin-top:8px"><span class="mono">size-wizard-test</span></p></div>
+  </div>
+  <div class="ok" style="margin-top:20px">Bu PDF yalnızca kişisel denemeniz içindir — ekibinize dağıtmak zorunda değilsiniz.</div>
+  <div class="footer"><span>CopyPilot AI · Kişisel deneme sunumu</span><span>10 / 10</span></div>
+</section>
+
+</body>
+</html>

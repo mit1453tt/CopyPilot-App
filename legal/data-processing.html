@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Data Processing Summary — CopyPilot AI by Fixiby</title>
+  <link rel="stylesheet" href="./assets/legal.css" />
+</head>
+<body>
+  <header>
+    <a class="brand" href="./index.html">CopyPilot AI<span class="by">by Fixiby Software Technologies</span></a>
+    <nav>
+      <a href="./index.html">Legal home</a>
+      <a href="./privacy-en.html">Privacy</a>
+      <a href="./terms-en.html">Terms</a>
+    </nav>
+  </header>
+  <main>
+    <article class="card">
+      <h1>Data processing summary</h1>
+      <p class="meta">18 July 2026 · GDPR / CCPA / Shopify App Store compliance companion to the Privacy Policy</p>
+
+      <h2>Roles</h2>
+      <ul>
+        <li><strong>Merchant:</strong> controller of storefront customer data in Shopify</li>
+        <li><strong>Fixiby Software Technologies:</strong> provider of CopyPilot AI; processor of product content needed to run the app; controller of B2B account/billing metadata</li>
+        <li><strong>Shopify:</strong> platform provider</li>
+      </ul>
+
+      <h2>Categories</h2>
+      <table>
+        <thead>
+          <tr><th>Category</th><th>Examples</th><th>Collected?</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Shop identifiers</td><td>shop domain, shop_id</td><td>Yes</td></tr>
+          <tr><td>Product content</td><td>title, body HTML, media, SEO fields</td><td>Yes (to provide the service)</td></tr>
+          <tr><td>Billing</td><td>plan, credits, charge IDs</td><td>Yes</td></tr>
+          <tr><td>Customers / orders</td><td>PII, addresses, payment instruments</td><td><strong>No</strong> — no customer/order scopes</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Shopify mandatory compliance webhooks</h2>
+      <p>Fixiby implements HMAC-verified endpoints for:</p>
+      <ul>
+        <li><code>customers/data_request</code></li>
+        <li><code>customers/redact</code></li>
+        <li><code>shop/redact</code></li>
+        <li><code>app/uninstalled</code> (recommended hygiene)</li>
+      </ul>
+      <p>Production endpoints on <a href="https://fixiby.vercel.app">fixiby.vercel.app</a>:</p>
+      <ul>
+        <li><code>POST /api/webhooks/compliance</code></li>
+        <li><code>POST /api/webhooks/app-uninstalled</code></li>
+      </ul>
+
+      <h2>Subprocessors (typical)</h2>
+      <ul>
+        <li>Shopify Inc. — Admin API, Billing, webhooks</li>
+        <li>Vercel Inc. — hosting for the public site and webhook handlers</li>
+        <li>Optional AI inference — product text / locale only</li>
+      </ul>
+
+      <h2>Merchant checklist</h2>
+      <ol>
+        <li>Link <a href="./privacy-en.html">Privacy Policy</a> in Partner Dashboard → App listing</li>
+        <li>Confirm <code>SHOPIFY_API_SECRET</code> is set on Vercel for HMAC verification</li>
+        <li>Run <code>shopify app deploy</code> so TOML webhook subscriptions register</li>
+      </ol>
+
+      <div class="note">This summary is not a signed DPA. Enterprise merchants may request a formal DPA at <a href="mailto:info@fixiby.com">info@fixiby.com</a>.</div>
+    </article>
+  </main>
+  <footer>© 2026 Fixiby Software Technologies · CopyPilot AI</footer>
+</body>
+</html>

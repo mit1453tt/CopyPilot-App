@@ -1,0 +1,7 @@
+{
+  "admin.app.home.render": {
+    "assets": [
+      "readme.txt"
+    ]
+  }
+}

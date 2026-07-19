@@ -1,0 +1,15 @@
+api_version = "2026-07"
+
+[[extensions]]
+name = "t:name"
+handle = "copy-pilot-home"
+uid = "5c9c25aa-6f8c-be83-6827-904b4092feff344ed08e"
+type = "ui_extension"
+
+[extensions.capabilities]
+api_access = true
+
+[[extensions.targeting]]
+module = "./src/AppHome.jsx"
+target = "admin.app.home.render"
+assets = "./assets"
