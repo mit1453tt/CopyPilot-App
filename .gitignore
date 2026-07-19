@@ -3,7 +3,6 @@ logs
 *.log
 node_modules
 npm-debug.log*
-package-lock.json
 yarn-debug.log*
 yarn-error.log*
 yarn.lock
@@ -39,3 +38,5 @@ shared/types/graphql
 *.njsproj
 *.sln
 *.sw?
+
+.vercel

@@ -1,0 +1,3 @@
+﻿Upload this file as App icon in Partner Dashboard:
+docs/app-store-icon/copypilot-app-icon.png
+Path full: C:\Users\TUNAHAN\CopyPilot-App\docs\app-store-icon\copypilot-app-icon.png

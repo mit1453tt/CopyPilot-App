@@ -27,13 +27,8 @@ embedded_app_direct_api_access = true
 [auth]
 redirect_urls = [
   "https://fixiby.vercel.app/api/auth",
-  "https://fixiby.vercel.app/auth/callback"
+  "https://fixiby.vercel.app/api/auth/callback"
 ]
 
 [build]
 automatically_update_urls_on_dev = true
-
-[app_proxy]
-url = "/apps/proxy"
-prefix = "apps"
-subpath = "copy-pilot"

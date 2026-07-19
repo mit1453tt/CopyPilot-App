@@ -961,34 +961,85 @@ export function buildListingPackage(product, opts) {
     keyword, keywords, language: lang, country,
     salesTitle, bodyHtml, metaTitle, metaDescription, imageSeo,
     newMedia, unsupportedVideos,
-    seo: analyzeSeo({ salesTitle, metaTitle, metaDescription, bodyHtml, keyword, keywords, imageSeo }),
-    geo: analyzeGeo({ salesTitle, metaTitle, metaDescription, bodyHtml, keyword, keywords }),
+    seo: analyzeSeo({ salesTitle, metaTitle, metaDescription, bodyHtml, keyword, keywords, imageSeo, language: lang }),
+    geo: analyzeGeo({ salesTitle, metaTitle, metaDescription, bodyHtml, keyword, keywords, language: lang }),
   };
 }
+
+function tipLang(pkg) {
+  return String(pkg.language || "en").toLowerCase().startsWith("tr") ? "tr" : "en";
+}
+
+const SEO_TIPS = {
+  en: {
+    metaTitleLong: "Meta title exceeds 60 characters.",
+    metaDescLong: "Meta description exceeds 160 characters.",
+    metaDescShort: "Meta description is a bit short (70–160 is ideal).",
+    kwMissingTitle: "Primary keyword is missing from the meta title.",
+    kwMissingBody: (list) => `Keywords missing from the description: ${list}.`,
+    missingAlt: (n) => `${n} image(s) missing alt text.`,
+    noImages: "No product images — image SEO cannot be applied.",
+    ok: "Basic SEO checks passed.",
+  },
+  tr: {
+    metaTitleLong: "Meta title 60 karakteri aşıyor.",
+    metaDescLong: "Meta description 160 karakteri aşıyor.",
+    metaDescShort: "Meta description biraz kısa (70–160 ideal).",
+    kwMissingTitle: "Birincil anahtar kelime meta title'da yok.",
+    kwMissingBody: (list) => `Açıklamada geçmeyen kelime: ${list}.`,
+    missingAlt: (n) => `${n} görselde alt metni eksik.`,
+    noImages: "Üründe görsel yok — görsel SEO uygulanamaz.",
+    ok: "Temel SEO kontrolleri geçti.",
+  },
+};
+
+const GEO_TIPS = {
+  en: {
+    bodyShort: "Make the description 120+ characters for AI citation.",
+    metaShort: "Add a richer meta description (80+ characters) — AI summaries use it.",
+    faq: "Add at least 2 FAQ / Q&A blocks for AI Overviews.",
+    specs: "Add measurable specs (size, weight, capacity) — AI prefers citable facts.",
+    sentences: "Write at least 4 clear informational sentences.",
+    titleLen: "Keep the title between 10–70 characters (ideal for AI snippets).",
+    keywords: "Include keywords naturally in the description (GEO + SEO).",
+    ok: "GEO checks passed — ready for AI search.",
+  },
+  tr: {
+    bodyShort: "AI citation için açıklamayı 120+ karaktere çıkarın.",
+    metaShort: "Zengin bir meta description ekleyin (80+ karakter) — AI özetleri bunu kullanır.",
+    faq: "AI Overviews için en az 2 soru-cevap (FAQ) bloğu ekleyin.",
+    specs: "Ölçülebilir özellikler ekleyin (ölçü, ağırlık, kapasite) — AI kaynak göstermeyi sever.",
+    sentences: "Açık, kısa cümlelerle en az 4 bilgi cümlesi yazın.",
+    titleLen: "Başlığı 10–70 karakter arasında tutun (AI snippet için ideal).",
+    keywords: "Anahtar kelimeleri doğal şekilde açıklamada geçirin (GEO + SEO).",
+    ok: "GEO kontrolleri geçti — AI arama için hazır.",
+  },
+};
 
 export function analyzeSeo(pkg) {
   const tips = [];
   let score = 100;
+  const t = SEO_TIPS[tipLang(pkg)];
   const kw = clean(pkg.keyword).toLowerCase();
   const kws = (pkg.keywords && pkg.keywords.length ? pkg.keywords : kw ? [kw] : []).map((k) => k.toLowerCase());
   const body = clean(pkg.bodyHtml).toLowerCase();
 
-  if (pkg.metaTitle.length > 60) { tips.push("Meta title 60 karakteri aşıyor."); score -= 10; }
-  if (pkg.metaDescription.length > 160) { tips.push("Meta description 160 karakteri aşıyor."); score -= 10; }
-  if (pkg.metaDescription.length < 70) { tips.push("Meta description biraz kısa (70–160 ideal)."); score -= 5; }
-  if (kw && !pkg.metaTitle.toLowerCase().includes(kw)) { tips.push("Birincil anahtar kelime meta title'da yok."); score -= 10; }
+  if (pkg.metaTitle.length > 60) { tips.push(t.metaTitleLong); score -= 10; }
+  if (pkg.metaDescription.length > 160) { tips.push(t.metaDescLong); score -= 10; }
+  if (pkg.metaDescription.length < 70) { tips.push(t.metaDescShort); score -= 5; }
+  if (kw && !pkg.metaTitle.toLowerCase().includes(kw)) { tips.push(t.kwMissingTitle); score -= 10; }
 
   const matched = kws.filter((k) => body.includes(k));
   const missing = kws.filter((k) => !body.includes(k));
-  if (missing.length) { tips.push(`Açıklamada geçmeyen kelime: ${missing.join(", ")}.`); score -= missing.length * 5; }
+  if (missing.length) { tips.push(t.kwMissingBody(missing.join(", "))); score -= missing.length * 5; }
 
   const missingAlt = (pkg.imageSeo || []).filter((i) => !i.alt).length;
-  if (missingAlt) { tips.push(`${missingAlt} görselde alt metni eksik.`); score -= missingAlt * 5; }
-  if ((pkg.imageSeo || []).length === 0) { tips.push("Üründe görsel yok — görsel SEO uygulanamaz."); score -= 10; }
+  if (missingAlt) { tips.push(t.missingAlt(missingAlt)); score -= missingAlt * 5; }
+  if ((pkg.imageSeo || []).length === 0) { tips.push(t.noImages); score -= 10; }
 
   return {
     score: Math.max(0, Math.min(100, score)),
-    tips: tips.length ? tips : ["Temel SEO kontrolleri geçti."],
+    tips: tips.length ? tips : [t.ok],
     keywordCoverage: kws.length ? Math.round((matched.length / kws.length) * 100) : 0,
   };
 }
@@ -1000,6 +1051,7 @@ export function analyzeSeo(pkg) {
 export function analyzeGeo(pkg) {
   const tips = [];
   let score = 0;
+  const t = GEO_TIPS[tipLang(pkg)];
   const title = clean(pkg.salesTitle || pkg.metaTitle);
   const meta = clean(pkg.metaDescription);
   const bodyHtml = String(pkg.bodyHtml || "");
@@ -1007,26 +1059,26 @@ export function analyzeGeo(pkg) {
   const lower = plain.toLowerCase();
 
   if (plain.length >= 120) score += 15;
-  else tips.push("AI citation için açıklamayı 120+ karaktere çıkarın.");
+  else tips.push(t.bodyShort);
 
   if (meta.length >= 80) score += 15;
-  else tips.push("Zengin bir meta description ekleyin (80+ karakter) — AI özetleri bunu kullanır.");
+  else tips.push(t.metaShort);
 
   const faqHits = (bodyHtml.match(/faq|sss|sıkça sorulan|\?\s*</gi) || []).length
     + (plain.match(/\?/g) || []).length;
   if (faqHits >= 2) score += 20;
-  else tips.push("AI Overviews için en az 2 soru-cevap (FAQ) bloğu ekleyin.");
+  else tips.push(t.faq);
 
   const hasSpecs = /\d/.test(plain) && /(cm|mm|kg|g|ml|oz|inch|%|ölç|size|weight|boyut)/i.test(plain);
   if (hasSpecs) score += 15;
-  else tips.push("Ölçülebilir özellikler ekleyin (ölçü, ağırlık, kapasite) — AI kaynak göstermeyi sever.");
+  else tips.push(t.specs);
 
   const sentences = plain.split(/[.!?]+/).filter((s) => s.trim().length > 12);
   if (sentences.length >= 4) score += 10;
-  else tips.push("Açık, kısa cümlelerle en az 4 bilgi cümlesi yazın.");
+  else tips.push(t.sentences);
 
   if (title.length >= 10 && title.length <= 70) score += 15;
-  else tips.push("Başlığı 10–70 karakter arasında tutun (AI snippet için ideal).");
+  else tips.push(t.titleLen);
 
   const kws = (pkg.keywords && pkg.keywords.length
     ? pkg.keywords
@@ -1035,7 +1087,7 @@ export function analyzeGeo(pkg) {
   const covered = kws.filter((k) => lower.includes(k)).length;
   if (kws.length && covered === kws.length) score += 10;
   else if (kws.length && covered > 0) score += 5;
-  else if (kws.length) tips.push("Anahtar kelimeleri doğal şekilde açıklamada geçirin (GEO + SEO).");
+  else if (kws.length) tips.push(t.keywords);
 
   score = Math.max(0, Math.min(100, score));
   const label = score >= 80 ? "AI Search Ready" : score >= 50 ? "Partially Ready" : "Needs GEO Work";
@@ -1043,6 +1095,6 @@ export function analyzeGeo(pkg) {
   return {
     score,
     label,
-    tips: tips.length ? tips : ["GEO kontrolleri geçti — AI arama için hazır."],
+    tips: tips.length ? tips : [t.ok],
   };
 }

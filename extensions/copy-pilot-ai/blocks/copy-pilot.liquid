@@ -65,9 +65,13 @@
   <header class="cp-topbar">
     <div class="cp-brand">
       <span class="cp-logo" aria-hidden="true">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
-        </svg>
+        <img
+          src="{{ 'copypilot-logo.png' | asset_url }}"
+          alt=""
+          width="28"
+          height="28"
+          style="width:28px;height:28px;object-fit:contain;border-radius:6px;background:#fff;"
+        />
       </span>
       <div class="cp-brand-text">
         <h2 class="cp-title">{{ cp_heading }}</h2>
@@ -365,8 +369,8 @@
     <h3 class="cp-modal-title" id="cpModalTitle-{{ block.id }}">{{ 'limitReachedTitle' | t: default: 'Monthly credit limit reached' }}</h3>
     <p class="cp-modal-text">{{ 'limitReachedText' | t: default: 'Buy a credit pack or upgrade your plan to keep generating.' }}</p>
     <div class="cp-modal-actions">
-      <button type="button" class="cp-btn cp-btn-secondary" data-cp-action="buy-credits" data-cp-pack="pack_300">
-        Buy Boost 300 â€” $24
+      <button type="button" class="cp-btn cp-btn-secondary" data-cp-action="buy-credits" data-cp-pack="pack_30">
+        Buy Boost 30 — $24
       </button>
       <button type="button" class="cp-btn cp-btn-primary" data-cp-action="subscribe" data-cp-plan="growth">
         Upgrade to Growth â€” $49/mo

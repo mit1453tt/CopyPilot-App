@@ -6,7 +6,13 @@ import { fetchProducts, publishListing } from "./api.js";
 import { LANGUAGES, COUNTRIES, marketFor } from "./markets.js";
 import { readCredits, saveCredits } from "./credits.js";
 import { PLANS, CREDIT_PACKS, planOf, canUse, languageAllowed } from "./plans.js";
-import { startPlanCheckout, startCreditPackCheckout, detectActivePlanId } from "./billing.js";
+import {
+  startPlanCheckout,
+  startCreditPackCheckout,
+  detectActivePlanId,
+  reconcileCreditPacks,
+  rememberPendingPack,
+} from "./billing.js";
 import { uiFor, tabsFor, planCopy } from "./uiI18n.js";
 import { legalUrl } from "./legalConfig.js";
 
@@ -35,6 +41,8 @@ function App() {
   const [creditsTotal, setCreditsTotal] = useState(10);
   const [bonusCredits, setBonusCredits] = useState(0);
   const [planId, setPlanId] = useState("free");
+  const [appliedPurchases, setAppliedPurchases] = useState([]);
+  const [creditPeriod, setCreditPeriod] = useState(null);
   const plan = planOf(planId);
   const ui = uiFor(lang);
   const tabs = tabsFor(lang);
@@ -71,17 +79,47 @@ function App() {
     (async () => {
       const c = await readCredits();
       setCreditShopId(c.shopId);
-      setCreditsUsed(c.used);
-      setCreditsTotal(c.total);
-      setBonusCredits(c.bonus || 0);
+      let used = c.used;
+      let bonus = c.bonus || 0;
+      let appliedPurchasesNext = c.appliedPurchases || [];
       let pid = c.planId || "free";
+      const period = c.period;
+
       const detected = await detectActivePlanId();
       if (detected) pid = detected;
+
+      // Apply paid credit packs only after Shopify marks the purchase ACTIVE.
+      try {
+        const recon = await reconcileCreditPacks(appliedPurchasesNext);
+        if (recon.bonusAdded > 0) {
+          bonus += recon.bonusAdded;
+          appliedPurchasesNext = recon.appliedPurchases;
+          setBanner({
+            tone: "success",
+            heading: "Credit pack applied",
+            text: `Added ${recon.bonusAdded} credits from: ${recon.grantedPacks.map((p) => p.name).join(", ")}.`,
+          });
+        }
+      } catch (e) {
+        /* non-fatal */
+      }
+
+      const total = planOf(pid).monthly_credits + bonus;
+      setCreditsUsed(used);
+      setBonusCredits(bonus);
       setPlanId(pid);
-      const total = planOf(pid).monthly_credits + (c.bonus || 0);
       setCreditsTotal(total);
-      if (c.shopId && (detected || c.planId !== pid)) {
-        saveCredits(c.shopId, { used: c.used, planId: pid, bonus: c.bonus || 0 });
+      setAppliedPurchases(appliedPurchasesNext);
+      setCreditPeriod(period);
+
+      if (c.shopId) {
+        saveCredits(c.shopId, {
+          used,
+          planId: pid,
+          bonus,
+          period,
+          appliedPurchases: appliedPurchasesNext,
+        });
       }
     })();
   }, []);
@@ -89,7 +127,13 @@ function App() {
   const creditsLeft = Math.max(0, creditsTotal - creditsUsed);
 
   function persistState(next) {
-    saveCredits(creditShopId, next);
+    saveCredits(creditShopId, {
+      used: next.used,
+      planId: next.planId,
+      bonus: next.bonus,
+      period: next.period || creditPeriod,
+      appliedPurchases: next.appliedPurchases || appliedPurchases,
+    });
   }
 
   function consumeCredits(n) {
@@ -760,14 +804,14 @@ function PlansTab(props) {
     setBusy("billing");
     setError("");
     try {
-      const res = await startPlanCheckout(nextId, { test: true });
+      const res = await startPlanCheckout(nextId);
       if (res.free) {
         activatePlanLocally("free");
         setBanner({ tone: "success", heading: ui.freeActiveHeading, text: ui.freeActiveBody });
         return;
       }
       if (res.confirmationUrl) {
-        activatePlanLocally(nextId);
+        // Do not activate paid plan until Shopify subscription is ACTIVE (reconciled on reload).
         setBanner({
           tone: "warning",
           heading: ui.billingConfirmHeading,
@@ -784,7 +828,6 @@ function PlansTab(props) {
         }
       }
     } catch (e) {
-      activatePlanLocally(nextId);
       setError(ui.billingLocalFallback(e.message));
     } finally {
       setBusy("");
@@ -795,13 +838,10 @@ function PlansTab(props) {
     setBusy("billing");
     setError("");
     try {
-      const res = await startCreditPackCheckout(packId, { test: true });
+      const res = await startCreditPackCheckout(packId);
       const pack = res.pack;
-      const nextBonus = bonusCredits + pack.credits;
-      setBonusCredits(nextBonus);
-      const total = planOf(planId).monthly_credits + nextBonus;
-      setCreditsTotal(total);
-      persistState({ used: creditsUsed, planId, bonus: nextBonus });
+      // Credits are granted only after the one-time purchase is ACTIVE (see reconcile on load).
+      rememberPendingPack(pack.id);
       setBanner({
         tone: "warning",
         heading: ui.packConfirmHeading,

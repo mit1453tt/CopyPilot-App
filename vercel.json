@@ -1,4 +1,7 @@
 {
+  "buildCommand": "echo Skipping Shopify CLI build on Vercel",
+  "outputDirectory": ".",
+  "framework": null,
   "rewrites": [
     { "source": "/webhooks/compliance", "destination": "/api/webhooks/compliance" },
     { "source": "/webhooks/app/uninstalled", "destination": "/api/webhooks/app-uninstalled" },

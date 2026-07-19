@@ -61,17 +61,20 @@ module.exports = async function handler(req, res) {
   }
 
   // CopyPilot does not store customer PII (no customer/order scopes).
-  // Acknowledge all compliance requests with 200.
+  // Shop metafields (copypilot.*) are owned by the shop and removed when the app is uninstalled;
+  // this webhook acknowledges GDPR shop/redact without claiming a separate data store purge.
   console.log("[Fixiby CopyPilot] compliance", topic, payload.shop_domain || payload.shop_id);
+
+  const note =
+    topic === "shop/redact"
+      ? "Acknowledged. No separate customer DB. Shop metafields are removed on uninstall / Shopify app data deletion."
+      : "No customer personal data is stored by this app.";
 
   return res.status(200).json({
     ok: true,
     topic,
     processor: "Fixiby Software Technologies",
     app: "CopyPilot AI",
-    note:
-      topic === "shop/redact"
-        ? "Shop-linked app data purged / marked for deletion."
-        : "No customer personal data is stored by this app.",
+    note,
   });
 };

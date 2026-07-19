@@ -83,6 +83,7 @@ product description AI, SEO product copy, AIDA copywriter, GEO score, Shopify li
 - Review deck: https://fixiby.vercel.app/presentation
 
 ## Assets to upload
-- Icon / banner: use brand teal `#0d9488` + indigo `#4f46e5` on slate
+- **App icon (required):** `docs/app-store-icon/copypilot-app-icon.png` (selected CopyPilot logo)
+- **Company mark:** `docs/brand/fixiby-logo.png` (selected Fixiby `</F>` logo)
 - Screenshots: export from `docs/app-store-screenshots/` (generated from presentation slides)
 - PDF briefing: `docs/CopyPilot-App-Store-Presentation.pdf`

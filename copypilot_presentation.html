@@ -118,6 +118,47 @@
         radial-gradient(ellipse 60% 50% at 10% 90%, rgba(13,148,136,.14), transparent 50%),
         #fff;
     }
+    .brand-row {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 20px;
+    }
+    .brand-row img {
+      width: 72px;
+      height: 72px;
+      object-fit: contain;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 6px;
+    }
+    .brand-pair {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand-pair img {
+      width: 56px;
+      height: 56px;
+      object-fit: contain;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 4px;
+    }
+    .footer-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .footer-brand img {
+      width: 18px;
+      height: 18px;
+      object-fit: contain;
+      border-radius: 4px;
+      background: #fff;
+    }
   </style>
 </head>
 <body>
@@ -127,12 +168,16 @@
     <section class="slide title-slide">
       <div class="geo"></div><div class="geo2"></div>
       <div class="pad center">
+        <div class="brand-row">
+          <img src="brand/copypilot-ai-logo.png" alt="CopyPilot AI" />
+          <img src="brand/fixiby-logo.png" alt="Fixiby" />
+        </div>
         <p class="eyebrow">Fixiby Software Technologies</p>
         <h1>CopyPilot AI by Fixiby</h1>
         <p class="lead">Agentic SEO &amp; Sales Copywriter for Shopify — merchant guide and App Store review briefing.</p>
         <p style="margin-top:28px;color:#64748b">Contact: <strong>info@fixiby.com</strong> &middot; Site: fixiby.com &middot; Live: fixiby.vercel.app</p>
       </div>
-      <div class="footer"><span>CopyPilot AI &middot; Developed by Fixiby Software Technologies</span><span>1 / 10</span></div>
+      <div class="footer"><span class="footer-brand"><img src="brand/copypilot-ai-logo.png" alt="" /> CopyPilot AI &middot; Developed by Fixiby Software Technologies</span><span>1 / 10</span></div>
     </section>
 
     <!-- 2 -->
@@ -347,6 +392,10 @@
     <section class="slide title-slide">
       <div class="geo"></div><div class="geo2"></div>
       <div class="pad center">
+        <div class="brand-pair" style="justify-content:center;margin-bottom:16px">
+          <img src="brand/copypilot-ai-logo.png" alt="CopyPilot AI" />
+          <img src="brand/fixiby-logo.png" alt="Fixiby" />
+        </div>
         <p class="eyebrow">App Store review Q&amp;A</p>
         <h2>Transparent answers for reviewers</h2>
         <div class="grid2" style="margin-top:12px">
@@ -369,7 +418,7 @@
         </div>
         <p style="margin-top:28px;font-size:22px">Thank you — we build CopyPilot AI to help merchants ship better listings safely.</p>
       </div>
-      <div class="footer"><span>CopyPilot AI &middot; Developed by Fixiby Software Technologies</span><span>10 / 10</span></div>
+      <div class="footer"><span class="footer-brand"><img src="brand/copypilot-ai-logo.png" alt="" /> CopyPilot AI &middot; Developed by Fixiby Software Technologies</span><span>10 / 10</span></div>
     </section>
 
   </div>

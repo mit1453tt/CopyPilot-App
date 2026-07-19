@@ -80,7 +80,7 @@
           self.onBilling(plan);
         },
         "buy-credits": function (e) {
-          var pack = e.currentTarget.getAttribute("data-cp-pack") || "pack_300";
+          var pack = e.currentTarget.getAttribute("data-cp-pack") || "pack_30";
           self.onBuyCredits(pack);
         }
       };

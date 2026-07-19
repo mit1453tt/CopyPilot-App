@@ -113,7 +113,7 @@
       audit: function () { self.onAudit(); },
       autofix: function () { self.onAutoFix(); },
       "buy-credits": function (e) {
-        var pack = (e && e.currentTarget && e.currentTarget.getAttribute("data-cp-pack")) || "pack_300";
+        var pack = (e && e.currentTarget && e.currentTarget.getAttribute("data-cp-pack")) || "pack_30";
         self.onBuyCredits(pack);
       },
       subscribe: function (e) {
@@ -522,7 +522,7 @@
   CopyPilotApp.prototype.onBuyCredits = function (packId) {
     var self = this;
     if (!window.CopyPilot.billing) { return; }
-    window.CopyPilot.billing.purchaseCreditPack(packId || "pack_300").then(function (res) {
+    window.CopyPilot.billing.purchaseCreditPack(packId || "pack_30").then(function (res) {
       self.state.credits = Object.assign(self.state.credits, res.ledger);
       self.renderCredits();
       self.applyCreditGate();
